@@ -40,7 +40,7 @@ module Api
         end
   
         def user_params
-          params.require(:user).permit(:name, :email, :bio)
+          params.require(:user).permit(:name, :email, :bio, :role, :department_id)
         end
       end
     end

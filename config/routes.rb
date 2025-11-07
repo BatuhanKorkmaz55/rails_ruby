@@ -4,10 +4,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :users
-      resources :courses
-      resources :exams
-      resources :questions
-      resources :responses
+      resources :departments
+      resources :shifts
+      resources :shift_assignments
     end
   end
 end

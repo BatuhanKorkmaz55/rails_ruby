@@ -10,13 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_04_172544) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_07_163844) do
   create_table "courses", force: :cascade do |t|
     t.string "title"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_courses_on_user_id"
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "exams", force: :cascade do |t|
@@ -45,12 +52,38 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_04_172544) do
     t.index ["user_id"], name: "index_responses_on_user_id"
   end
 
+  create_table "shift_assignments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "shift_id", null: false
+    t.string "status"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shift_id"], name: "index_shift_assignments_on_shift_id"
+    t.index ["user_id"], name: "index_shift_assignments_on_user_id"
+  end
+
+  create_table "shifts", force: :cascade do |t|
+    t.date "date"
+    t.time "start_time"
+    t.time "end_time"
+    t.string "shift_type"
+    t.string "status"
+    t.integer "department_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["department_id"], name: "index_shifts_on_department_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "bio"
+    t.string "role", default: "employee"
+    t.integer "department_id"
+    t.index ["department_id"], name: "index_users_on_department_id"
   end
 
   add_foreign_key "courses", "users"
@@ -58,4 +91,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_04_172544) do
   add_foreign_key "questions", "exams"
   add_foreign_key "responses", "questions"
   add_foreign_key "responses", "users"
+  add_foreign_key "shift_assignments", "shifts"
+  add_foreign_key "shift_assignments", "users"
+  add_foreign_key "shifts", "departments"
 end

@@ -1,5 +1,7 @@
 class User < ApplicationRecord
-    has_many :courses
-    has_many :responses
-  end
-  
+  belongs_to :department, optional: true
+  has_many :shift_assignments
+  has_many :shifts, through: :shift_assignments
+
+  enum role: { employee: 'employee', manager: 'manager', admin: 'admin' }
+end
